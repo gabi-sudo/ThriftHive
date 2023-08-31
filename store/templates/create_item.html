@@ -1,0 +1,47 @@
+{% extends 'index.html' %}
+{% block content %}
+
+<div class="container mt-5">
+    <h2>Add New Item</h2>
+    <form method="POST" action="{% url 'create_item' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input type="text" class="form-control" id="name" name="name" placeholder="Enter item name" required>
+        </div>
+        <div class="mb-3">
+            <label for="image" class="form-label">Image</label>
+            <input type="file" class="form-control" id="image" name="image" accept="image/*" required>
+        </div>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="category" class="form-label">Category</label>
+                <select class="form-select" id="category" name="category" required>
+                    <option value="men">Men</option>
+                    <option value="women">Women</option>
+                    <option value="accessories">Accessories</option>
+                </select>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="size" class="form-label">Size</label>
+                <select class="form-select" id="size" name="size" required>
+                    <option value="small">Small</option>
+                    <option value="medium">Medium</option>
+                    <option value="large">Large</option>
+                </select>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="price" class="form-label">Price</label>
+            <input type="number" step="0.01" class="form-control" id="price" name="price" placeholder="Enter price" required>
+        </div>
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea class="form-control" id="description" name="description" rows="4" placeholder="Enter item description"></textarea>
+        </div>
+        <button type="submit" class="btn btn-warning">Save</button>
+        <a href="#" class="btn btn-secondary ms-2">Go Back</a>
+    </form>
+</div>
+
+{% endblock %}

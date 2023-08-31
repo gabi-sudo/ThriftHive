@@ -1,0 +1,8 @@
+{% extends 'index.html' %}
+{% block content %}
+
+<div class="container">
+    <div class="fs-1 text-center mb-1">Please <a class="text-warning fw-bold" href="{% url 'login' %}">LOGIN</a> or <a class="text-warning fw-bold" href="{% url 'register' %}">REGISTER</a> to continue!</div>
+</div>
+
+{% endblock %}

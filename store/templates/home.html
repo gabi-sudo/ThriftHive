@@ -1,0 +1,44 @@
+{% extends 'index.html' %}
+{% block content %}
+
+<div class="container mt-2">
+    {% if items %}
+        {% if category %}
+            <div class="fs-1 text-center mb-1">{{ items.0.get_category_display }}</div>
+        {% elif search %}
+            <div class="fs-1 text-center mb-1">Search: {{ search }}</div>
+        {% else %}
+            <div class="fs-1 text-center mb-1">Welcome to ThriftHive</div>
+        {% endif %}
+        <div class="row">
+            {% for item in items %}
+            {% if item.status == 'available' or item.status == 'in_cart' and cart.user == user %}
+            <div class="col-md-3 mb-3">
+                <div class="card">
+                    <a href="{% url 'item_view' id=item.id %}" class="text-reset text-decoration-none">
+                    <img class="card-img-top" src="{{ item.image.url }}" alt="{{ item.name }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ item.name }}</h5>
+                        </a>
+                        <p class="card-size">Size: {{ item.get_size_display }}</p>
+                        <p class="card-price">Price: <strong>${{ item.price }}</strong></p>
+                        <form action="{% url 'add_to_cart' item.id %}" method="POST">
+                            {% csrf_token %}
+                            {% if item.status == 'available' %}
+                                <button type="submit" class="btn btn-outline-warning w-100"><i class="fa-solid fa-heart"></i></button>
+                            {% elif item.status == 'in_cart' %}
+                                <button type="submit" class="btn btn-warning w-100"><i class="fa-solid fa-heart"></i></button>
+                            {% endif %}
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="fs-1 text-center mb-1">There are no items here currently!</div>
+    {% endif %}
+</div>
+
+{% endblock %}

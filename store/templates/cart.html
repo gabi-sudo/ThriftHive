@@ -1,0 +1,73 @@
+{% extends 'index.html' %}
+{% block content %}
+
+<div class="container mt-2">
+    <div class="fs-1 text-center mb-1">My Items</div>
+    <div class="row mb-3">
+        <ul class="nav nav-tabs mb-3 pe-0">
+            <li class="nav-item col-6 text-center px-3">
+                <a class="nav-link active text-black" href="#mycart-tab" data-bs-toggle="tab">My Cart</a>
+            </li>
+            <li class="nav-item col-6 text-center px-3">
+                <a class="nav-link text-black" href="#ordereditems-tab" data-bs-toggle="tab">Ordered Items</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="tab-content">
+        <div class="tab-pane show active" id="mycart-tab">
+            {% if cart_items %}
+            <div class="row">
+                {% for item in cart_items %}
+                <div class="col-md-3 mb-3">
+                    <div class="card">
+                        <a href="{% url 'item_view' id=item.id %}" class="text-reset text-decoration-none">
+                        <img class="card-img-top" src="{{ item.image.url }}" alt="{{ item.name }}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ item.name }}</h5>
+                            </a>
+                            <p class="card-size">Size: {{ item.get_size_display }}</p>
+                            <p class="card-price">Price: <strong>${{ item.price }}</strong></p>
+                            <form action="{% url 'add_to_cart' item.id %}" method="POST" onsubmit="return confirm('Are you sure you want to remove this item from your cart?');">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-warning w-100"><i class="fa-solid fa-heart"></i></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                <form action="{% url 'order' %}" method="POST" onsubmit="return confirm('Are you sure you want to order these items from your cart?');">
+                    {% csrf_token %}
+                    <div class="text-center fw-bold fs-3">Total Price: ${{ total_price }}</div>
+                    <div class="d-flex justify-content-center">
+                        <button type="submit" class="btn btn-warning w-25 fw-bold fs-4">Buy</button>
+                    </div>
+                </form>
+            </div>
+            {% else %}
+            <h3 class="text-center">You Have No Items in Your Cart</h3>
+            {% endif %}
+        </div>
+        <div class="tab-pane" id="ordereditems-tab">
+            {% if ordered_items %}
+            <div class="row">
+                {% for item in ordered_items %}
+                <div class="col-md-3 mb-3">
+                    <div class="card">
+                        <img class="card-img-top" src="{{ item.image.url }}" alt="{{ item.name }}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ item.name }}</h5>
+                            <p class="card-size">Size: {{ item.get_size_display }}</p>
+                            <p class="card-price">Price: <strong>${{ item.price }}</strong></p>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <h3 class="text-center">You Have No Orders</h3>
+            {% endif %}
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'index.html' %}
+{% block content %}
+
+<div class="container mt-5">
+    <h2>Register</h2>
+    <form method="post" action="{% url 'register' %}">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input type="text" class="form-control" id="username" name="username" value="{{ username }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" name="email" value="{{ email }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password" name="password" required>
+        </div>
+        <div class="mb-3">
+            <label for="repeat_password" class="form-label">Repeat Password</label>
+            <input type="password" class="form-control" id="repeat_password" name="repeat_password" required>
+        </div>
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-warning">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        <button type="submit" class="btn btn-warning">Register</button>
+    </form>
+</div>
+
+{% endblock %}
